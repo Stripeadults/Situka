@@ -1,1 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>SITUKA INVESTMENTS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:linear-gradient(135deg,#0a0a1a 0%,#1a1a2e 100%);color:#fff;min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:90px}
+.screen{display:none}.screen.active{display:block;animation:fadeIn 0.3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.header{padding:20px;text-align:center;background:linear-gradient(135deg,#00d4ff 0%,#7b2cbf 100%);font-weight:900;font-size:22px;color:#fff;box-shadow:0 4px 20px rgba(0,212,255,0.3);position:relative}
+.btn{width:90%;margin:12px auto;display:block;padding:16px;background:linear-gradient(135deg,#00d4ff 0%,#7b2cbf 100%);border:0;border-radius:14px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(0,212,255,0.3)}
+.btn-outline{background:transparent;border:2px solid #00d4ff;color:#00d4ff}
+.btn-success{background:linear-gradient(135deg,#00ff88,#00cc66)}
+.btn-danger{background:#ff0044}
+.btn-warning{background:#ffaa00;color:#000}
+input,select,textarea{width:90%;margin:10px auto;display:block;padding:15px;background:#1e1e2e;border:2px solid #2a2a3a;border-radius:12px;color:#fff;font-size:16px}
+.label{font-size:12px;color:#00d4ff;margin-left:5%;display:block;margin-bottom:5px;font-weight:600}
+.card{background:#1e1e2e;margin:14px;border-radius:20px;padding:20px;border:1px solid #2a2a3a}
+.invest-card{background:linear-gradient(135deg,#1e1e2e 0%,#25253a 100%);border:2px solid #00d4ff;margin:14px;border-radius:20px;padding:20px;text-align:center;cursor:pointer}
+.invest-card.selected{border-color:#00ff88;background:linear-gradient(135deg,#00ff8820 0%,#00cc6620 100%)}
+.payment-btn{flex:1;padding:18px;border-radius:16px;text-align:center;font-weight:800;cursor:pointer;border:3px solid transparent;font-size:16px}
+.payment-btn.selected{border-color:#00ff88}
+.invest-amount{font-size:28px;font-weight:900;color:#00ff88}
+.invest-daily{font-size:16px;color:#00d4ff;margin:5px 0}
+.invest-min{font-size:12px;color:#ffaa00}
+.balance-box{text-align:center;padding:25px 20px}
+.balance-amount{font-size:40px;font-weight:900;background:linear-gradient(135deg,#00ff88,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.payment-icons{display:flex;gap:15px;width:90%;margin:15px auto}
+.mtn-btn{background:#ffcc00;color:#000}.airtel-btn{background:#ff0044;color:#fff}
+.payment-number-box{background:#25253a;border:2px dashed #00ff88;padding:20px;border-radius:16px;margin:15px 0;text-align:center}
+.payment-number{font-size:28px;font-weight:900;color:#00ff88}
+.brand-hero{padding:30px 20px;text-align:center}
+.brand-icon{font-size:60px;margin-bottom:10px}
+.brand-name{font-size:28px;font-weight:900;background:linear-gradient(135deg,#00d4ff,#7b2cbf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.phone-group{display:flex;width:90%;margin:10px auto;gap:8px}
+.phone-group select{width:35%}.phone-group input{width:65%}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:none;background:#1a1a2e;border-top:2px solid #00d4ff;padding:10px 0;z-index:100}
+.bottom-nav.show{display:flex}
+.nav-btn{flex:1;text-align:center;font-size:11px;color:#666;cursor:pointer}
+.nav-btn.icon{font-size:22px;display:block;margin-bottom:3px}
+.nav-btn.active{color:#00d4ff}
+.note-danger{font-size:12px;color:#ff0044;text-align:center;padding:10px;background:#ff004410;border-radius:10px;margin:10px;font-weight:700}
+.welcome{padding:15px;text-align:center;background:#25253a;margin:10px;border-radius:12px}
+.record-item{background:#25253a;padding:12px;border-radius:10px;margin-bottom:10px;border-left:3px solid #00d4ff}
+.user-card{background:#25253a;padding:15px;border-radius:12px;margin-bottom:12px;border-left:4px solid #00d4ff}
+.user-card h4{color:#00ff88;margin-bottom:5px}
+.user-card p{font-size:12px;color:#aaa;margin:3px 0}
+.admin-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.admin-icon{position:absolute;top:15px;right:15px;width:30px;height:30px;opacity:0;cursor:pointer;z-index:10}
+.admin-search{background:#1a1a2e;padding:12px;border-radius:12px;margin-bottom:15px}
+.referral-box{background:#1a1a2e;padding:15px;border-radius:12px;margin:14px;border:2px dashed #00ff88}
+.referral-link{background:#25253a;padding:12px;border-radius:10px;font-size:12px;color:#00d4ff;word-break:break-all;margin:8px 0}
+.copy-btn{padding:8px 12px;font-size:12px;width:auto;margin:5px}
+.admin-tabs{display:flex;gap:8px;margin-bottom:15px;overflow-x:auto}
+.admin-tabs button{flex:1;min-width:120px;padding:10px;font-size:12px}
+.status-badge{padding:4px 8px;border-radius:6px;font-size:10px;font-weight:700}
+.status-pending{background:#ffaa0010;color:#ffaa00}
+.status-paid{background:#00ff8810;color:#00ff88}
+.status-withdraw{background:#ff004410;color:#ff0044}
+.join-date{font-size:10px;color:#00d4ff;margin-top:3px}
+.proof-box{background:#1a1a2e;padding:12px;border-radius:10px;margin-bottom:10px;border-left:4px solid #ff6b00}
+.proof-sms{background:#25253a;padding:10px;border-radius:8px;font-size:11px;color:#00ff88;margin:8px 0;white-space:pre-wrap}
+.withdraw-btn{width:90%;margin:10px auto;padding:14px;background:linear-gradient(135deg,#ff6b00,#ff0044);border:0;border-radius:12px;color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.withdraw-disabled{background:#333;color:#666;cursor:not-allowed}
+.withdraw-request{background:#1a1a2e;padding:12px;border-radius:10px;margin-bottom:10px;border-left:4px solid #ff6b00}
+.package-withdraw-btn{width:100%;padding:8px;margin-top:8px;background:linear-gradient(135deg,#ff6b00,#ff0044);border:0;border-radius:8px;color:#fff;font-weight:700;font-size:12px;cursor:pointer}
+.package-withdraw-btn:disabled{background:#333;color:#666}
+.inviter-info{background:#1a1a2e;padding:8px;border-radius:8px;margin-top:5px;font-size:11px;border-left:2px solid #00ff88}
+</style>
+</head>
+<body>
+
+<div id="login" class="screen active">
+  <div class="header" id="headerlogin">SITUKA INVESTMENTS<div class="admin-icon" id="adminicon"></div></div>
+  <div class="brand-hero"><div class="brand-icon">💰</div><div class="brand-name">SITUKA</div><div style="color:#888">Earn Daily For 30 Days</div></div>
+  <div class="note-danger">⚠️ Use EXACT Name + Phone on Mobile Money</div>
+  <div id="loginform">
+    <div style="text-align:center;font-weight:800;margin:10px;color:#00d4ff">LOGIN</div>
+    <span class="label">Full Name</span><input id="loginname" placeholder="Enter name used to register">
+    <span class="label">Phone Number</span><div class="phone-group"><select><option>+256</option></select><input id="loginphone" placeholder="7xxxxxxxx" maxlength="9" inputmode="numeric"></div>
+    <button class="btn btn-outline" onclick="loginExisting()">🔑 Login to My Account</button>
+    <div style="text-align:center;margin:15px 0;color:#666">----------- NEW USER? -----------</div>
+    <button class="btn" onclick="showCreate()">✨ Create New Account</button>
+  </div>
+  <div id="signupform" style="display:none">
+    <div style="text-align:center;font-weight:800;margin:10px;color:#00ff88">CREATE NEW ACCOUNT</div>
+    <span class="label">Full Name - As on Mobile Money</span><input id="fullname" placeholder="e.g. JOHN DOE">
+    <span class="label">🌍 Phone Number - For Payout</span><div class="phone-group"><select><option>+256</option></select><input id="phone" placeholder="7xxxxxxxx" maxlength="9" inputmode="numeric"></div>
+    <input type="hidden" id="refcode"><input type="hidden" id="refname">
+    <button class="btn" onclick="createAccount()">✨ Create Account & Continue</button>
+    <button class="btn btn-outline" onclick="showLogin()">← Back to Login</button>
+  </div>
+</div>
+
+<div id="investments" class="screen">
+  <div class="header">Choose Package</div>
+  <div class="welcome"><div>Welcome, <span id="welcomeName" style="font-weight:800;color:#00ff88"></span></div></div>
+  <div class="balance-box"><div style="color:#888;font-size:13px">Your Balance</div><div class="balance-amount">UGX <span id="balance">0</span></div></div>
+  <div class="referral-box">
+    <div style="font-weight:800;color:#00ff88;margin-bottom:8px">🎁 INVITE & EARN UGX 4,000</div>
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px">You have <span id="referralCount">0</span> people joined through your link</div>
+    <div class="referral-link" id="referralLink"></div>
+    <button class="btn btn-outline copy-btn" onclick="copyReferral()">📋 Copy Link</button>
+    <div style="font-size:12px;color:#00d4ff;margin-top:5px">Earned: UGX <span id="referralEarned">0</span></div>
+  </div>
+
+  <div class="invest-card" onclick="selectPackage(15000,2500,5000,this)"><div style="font-weight:800;font-size:18px">PACKAGE 1</div><div class="invest-amount">UGX 15,000</div><div class="invest-daily">Earn UGX 2,500 Daily</div><div class="invest-min">Min Withdraw: UGX 5,000</div></div>
+  <div class="invest-card" onclick="selectPackage(20000,5000,7500,this)"><div style="font-weight:800;font-size:18px">PACKAGE 2</div><div class="invest-amount">UGX 20,000</div><div class="invest-daily">Earn UGX 5,000 Daily</div><div class="invest-min">Min Withdraw: UGX 7,500</div></div>
+  <div class="invest-card" onclick="selectPackage(50000,15000,11000,this)"><div style="font-weight:800;font-size:18px">PACKAGE 3</div><div class="invest-amount">UGX 50,000</div><div class="invest-daily">Earn UGX 15,000 Daily</div><div class="invest-min">Min Withdraw: UGX 11,000</div></div>
+  <div class="invest-card" onclick="selectPackage(200000,45000,55000,this)"><div style="font-weight:800;font-size:18px">PACKAGE 4</div><div class="invest-amount">UGX 200,000</div><div class="invest-daily">Earn UGX 45,000 Daily</div><div class="invest-min">Min Withdraw: UGX 55,000</div></div>
+  <div class="invest-card" onclick="selectPackage(500000,100000,180000,this)"><div style="font-weight:800;font-size:18px">PACKAGE 5</div><div class="invest-amount">UGX 500,000</div><div class="invest-daily">Earn UGX 100,000 Daily</div><div class="invest-min">Min Withdraw: UGX 180,000</div></div>
+  <div class="invest-card" onclick="selectPackage(1000000,205000,350000,this)"><div style="font-weight:800;font-size:18px">PACKAGE 6</div><div class="invest-amount">UGX 1,000,000</div><div class="invest-daily">Earn UGX 205,000 Daily</div><div class="invest-min">Min Withdraw: UGX 350,000</div></div>
+  <button class="btn btn-success" id="investBtn" onclick="goToPayment()">🚀 Select a Package</button>
+</div>
+
+<div id="payment" class="screen">
+  <div class="header"><span style="position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:26px;cursor:pointer" onclick="showScreen('investments')">←</span>Complete Payment</div>
+  <div class="card">
+    <div style="text-align:center;margin-bottom:15px"><div style="font-size:24px;font-weight:900;color:#00ff88" id="selectedpackage">UGX 0</div></div>
+    <div style="font-weight:700;margin-bottom:10px">Step 1: Choose Payment Method</div>
+    <div class="payment-icons"><div class="payment-btn mtn-btn" id="mtnbtn" onclick="showPayment('MTN')">📱 MTN</div><div class="payment-btn airtel-btn" id="airtelbtn" onclick="showPayment('Airtel')">📱 AIRTEL</div></div>
+    <div id="paymentnumberbox" style="display:none"></div>
+    <div id="step2" style="display:none">
+      <div style="background:#1a1a2e;padding:15px;border-radius:12px;margin:15px 0;border-left:3px solid #00ff88">
+        <div style="font-weight:800;color:#00ff88;margin-bottom:8px">📄 Step 2: Submit Payment Proof</div>
+        <div style="font-size:12px;color:#aaa;line-height:1.6;margin-bottom:10px">1. After sending payment, copy the SMS confirmation from MTN or Airtel<br>2. Paste it below and tap Submit</div>
+        <span class="label">Paste Your Payment SMS Here</span>
+        <textarea id="paymentProof" rows="4" placeholder="Paste the full SMS from MTN/Airtel here..."></textarea>
+      </div>
+      <button class="btn btn-success" onclick="submitPaymentProof()">✅ Submit Payment Proof</button>
+    </div>
+  </div>
+</div>
+
+<div id="dashboard" class="screen">
+  <div class="header">Dashboard</div>
+  <div class="welcome"><div>Account: <span id="dashName" style="font-weight:800;color:#00ff88"></span></div></div>
+  <div class="balance-box"><div style="color:#888;font-size:13px">Available Balance</div><div class="balance-amount">UGX <span id="dbalance">0</span></div></div>
+  <button class="withdraw-btn" id="referralWithdrawBtn" onclick="requestReferralWithdraw()" style="background:linear-gradient(135deg,#00ff88,#00cc66)">🎁 Withdraw Referral: UGX 0</button>
+  <div class="card"><div style="font-weight:700;margin-bottom:10px">📊 Active Packages</div><div id="activeinvest">No active packages</div></div>
+  <button class="btn btn-outline" onclick="logout()">🚪 Logout</button>
+</div>
+<div id="records" class="screen">
+  <div class="header">📋 My Records</div>
+  <div class="card"><div style="font-weight:700;margin-bottom:10px">📜 All Package History</div><div id="allrecords">No records yet</div></div>
+</div>
+
+<div id="referrals" class="screen">
+  <div class="header">👥 My Referrals</div>
+  <div class="welcome"><div>You have <span id="refCount2">0</span> people joined through your link</div></div>
+  <div class="card"><div style="font-weight:700;margin-bottom:10px">People Who Joined With You</div><div id="refList">No referrals yet</div></div>
+</div>
+
+<div id="admin" class="screen">
+  <div class="header"><span style="position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:26px;cursor:pointer" onclick="logout()">←</span>Admin Panel</div>
+  <div class="card">
+    <div class="admin-tabs">
+      <button class="btn btn-outline" onclick="showAdminTab('users')">All Users</button>
+      <button class="btn btn-warning" onclick="showAdminTab('referrals')">Referrals</button>
+      <button class="btn btn-success" onclick="showAdminTab('payouts')">Daily Payouts</button>
+      <button class="btn btn-email" onclick="showAdminTab('proofs')">Payment Proofs</button>
+      <button class="btn btn-danger" onclick="showAdminTab('withdrawals')">Withdrawals</button>
+    </div>
+
+    <div id="adminUsersTab">
+      <div class="admin-search">
+        <span class="label">Filter by Join Date</span>
+        <input type="date" id="userDateFilter">
+        <button class="btn btn-outline" onclick="filterUsersByDate()">Filter</button>
+        <button class="btn btn-outline" onclick="loadAllUsers()">Show All</button>
+      </div>
+      <div id="adminUsers">Loading...</div>
+    </div>
+
+    <div id="adminReferralsTab" style="display:none"><div id="adminReferrals">Loading...</div></div>
+    <div id="adminPayoutsTab" style="display:none"><div id="adminPayouts">Loading...</div><button class="btn btn-danger" onclick="deleteExpired()">🗑️ Delete Expired Packages</button></div>
+    <div id="adminProofsTab" style="display:none"><div id="adminProofs">Loading payment proofs...</div></div>
+    <div id="adminWithdrawalsTab" style="display:none"><div id="adminWithdrawals">Loading withdrawal requests...</div></div>
+  </div>
+  <button class="btn btn-danger" onclick="logout()">🚪 Logout Admin</button>
+</div>
+
+<div class="bottom-nav" id="bottomnav">
+  <div class="nav-btn" data-screen="investments"><span class="nav-btn icon">📦</span>Packages</div>
+  <div class="nav-btn" data-screen="dashboard"><span class="nav-btn icon">🏠</span>Dashboard</div>
+  <div class="nav-btn" data-screen="referrals"><span class="nav-btn icon">👥</span>Referrals</div>
+  <div class="nav-btn" data-screen="records"><span class="nav-btn icon">📋</span>Records</div>
+</div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, set, get, update, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA7Moc3EHCMkwTVaWJjJXfZCKZAio4hz_o",
+    authDomain: "situka-investment.firebaseapp.com",
+    databaseURL: "https://situka-investment-default-rtdb.firebaseio.com",
+    projectId: "situka-investment",
+    storageBucket: "situka-investment.firebasestorage.app",
+    messagingSenderId: "448166066076",
+    appId: "1:448166066076:web:5e5fe8f043ce7c1843ba59"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const MTN_NUMBER = "0746085840";
+  const AIRTEL_NUMBER = "0756406186";
+  const ADMIN_ACCOUNT_NAME = "Nabakooza Milly";
+  const PAYOUT_DAYS = 30;
+  const ADMIN_NAME = "SITUKA";
+  const ADMIN_PASS = "Buwembo";
+  const REFERRAL_BONUS = 4000;
+
+  let currentUser = null;let currentUserId = null;let selectedPackage = null;let selectedPaymentMethod = ''; let isAdmin = false; let adminTapCount = 0; let isNewUser = false; let allUsersCache = {};
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(n=>{ if(n.getAttribute('data-screen') === id) n.classList.add('active'); });
+    if(id==='dashboard') loadDashboard();
+    if(id==='records') loadRecords();
+    if(id==='admin') loadAllUsers();
+    if(id==='investments') showReferral();
+    if(id==='referrals') loadReferrals();
+  }
+  document.querySelectorAll('.nav-btn').forEach(btn=>{ btn.addEventListener('click', ()=>{ showScreen(btn.getAttribute('data-screen')); }); });
+  document.getElementById('adminicon').addEventListener('click', ()=>{ adminTapCount++; setTimeout(()=>adminTapCount=0, 2000); if(adminTapCount >= 5) adminLogin(); });
+
+  window.adminLogin = function(){
+    const name = prompt("Admin Name:");
+    const pass = prompt("Admin Password:");
+    if(name?.toUpperCase() === ADMIN_NAME && pass === ADMIN_PASS){
+      isAdmin = true;
+      document.getElementById('bottomnav').classList.remove('show');
+      showScreen('admin');
+    } else { alert("Wrong Admin Credentials"); }
+  }
+
+  window.showCreate = ()=>{
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    const refname = urlParams.get('name');
+    if(ref) document.getElementById('refcode').value = ref;
+    if(refname) document.getElementById('refname').value = refname;
+    document.getElementById('loginform').style.display='none';
+    document.getElementById('signupform').style.display='block';
+  }
+  window.showLogin = ()=>{document.getElementById('signupform').style.display='none';document.getElementById('loginform').style.display='block';}
+  async function saveLocal(key, data){ await set(ref(db, 'users/' + key), data); }
+  async function loadLocal(key){ const snap = await get(ref(db, 'users/' + key)); return snap.exists()? snap.val() : null; }
+  async function loadAllFromDB(){ const snap = await get(ref(db, 'users')); allUsersCache = snap.exists()? snap.val() : {}; return allUsersCache; }
+
+  function findUserById(id){ return allUsersCache[id]? {id,...allUsersCache[id]} : null; }
+
+  // UPDATED: MARK PAID ONLY ONCE PER DAY
+  window.markPaid = async function(userKey, invIndex){
+    const today = new Date().toISOString().split('T')[0];
+    const userRef = ref(db, 'users/' + userKey);
+    const snap = await get(userRef);
+    if(!snap.exists()) return alert('User not found');
+    const user = snap.val();
+
+    if(!user.investments ||!user.investments[invIndex] ||!user.investments[invIndex].active)
+      return alert('Package not active');
+
+    const inv = user.investments[invIndex];
+
+    // BLOCK: if already paid today
+    if(inv.lastPaidDate === today)
+      return alert(`Already marked PAID today for ${user.name}. You can mark again tomorrow.`);
+
+    if(!confirm(`Mark 1 day as PAID for ${user.name}? UGX ${inv.daily.toLocaleString()}`)) return;
+
+    inv.daysPaid += 1;
+    inv.lastPaidDate = today; // save today so we can't pay again
+    user.balance += inv.daily;
+    user.totalPaid = (user.totalPaid || 0) + inv.daily;
+    if(inv.daysPaid >= PAYOUT_DAYS) inv.active = false; // auto expire after 30 days
+
+    await update(userRef, user);
+    alert(`Paid UGX ${inv.daily.toLocaleString()} to ${user.name}. Day ${inv.daysPaid}/${PAYOUT_DAYS}`);
+    loadAdminPayouts();
+  }
+
+  window.markWithdrawPaid = async function(userKey, withdrawId){
+    if(!confirm('Mark this withdrawal as PAID?')) return;
+    const userRef = ref(db, 'users/' + userKey);
+    const snap = await get(userRef);
+    if(!snap.exists()) return alert('User not found');
+    const user = snap.val();
+    if(user.withdrawRequests && user.withdrawRequests[withdrawId]){
+      user.withdrawRequests[withdrawId].status = 'paid';
+      user.withdrawRequests[withdrawId].paidDate = Date.now();
+      await update(userRef, user);
+      alert(`${user.withdrawRequests[withdrawId].type} of UGX ${user.withdrawRequests[withdrawId].amount.toLocaleString()} marked as PAID for ${user.name}`);
+      loadWithdrawals();
+    }
+  }
+
+  window.markReferralPaid = async function(referrerKey, referredKey){
+    if(!confirm('Mark Referral Bonus as PAID?')) return;
+    const referrerRef = ref(db, 'users/' + referrerKey);
+    const snap = await get(referrerRef);
+    if(!snap.exists()) return;
+    const referrer = snap.val();
+    const referred = await loadLocal(referredKey);
+    if(referrer && referred){
+      referrer.referralsData = referrer.referralsData || {};
+      referrer.referralsData[referredKey] = referrer.referralsData[referredKey] || {};
+      referrer.referralsData[referredKey].paid = true;
+      await update(referrerRef, referrer);
+      alert(`Referral bonus marked as PAID for ${referred.name}`);
+      loadAllReferrals();
+    }
+  }
+
+  window.deleteAdminReferral = async function(referrerKey, referredKey){
+    const referrer = allUsersCache[referrerKey];
+    const referred = allUsersCache[referredKey];
+    if(!referrer ||!referred) return;
+    if(!confirm(`Hide referral: ${referred.name} from admin panel? User accounts will still work.`)) return;
+    await update(ref(db, 'users/' + referrerKey + '/referralsData/' + referredKey), {hiddenFromAdmin: true});
+    alert(`Referral hidden from admin panel`);
+    loadAllReferrals();
+  }
+
+  window.deleteExpired = async function(){
+    if(!confirm('Delete all expired packages?')) return;
+    const allUsers = await loadAllFromDB();
+    for(const key in allUsers){
+      const u = allUsers[key];
+      if(u.investments) {
+        u.investments = u.investments.filter(inv => inv.active);
+        await update(ref(db, 'users/' + key), u);
+      }
+    }
+    alert('Expired packages deleted');
+    loadAdminPayouts();
+  }
+
+  window.showAdminTab = function(tab){
+    document.getElementById('adminUsersTab').style.display = tab==='users'?'block':'none';
+    document.getElementById('adminReferralsTab').style.display = tab==='referrals'?'block':'none';
+    document.getElementById('adminPayoutsTab').style.display = tab==='payouts'?'block':'none';
+    document.getElementById('adminProofsTab').style.display = tab==='proofs'?'block':'none';
+    document.getElementById('adminWithdrawalsTab').style.display = tab==='withdrawals'?'block':'none';
+    if(tab==='users') loadAllUsers();
+    if(tab==='referrals') loadAllReferrals();
+    if(tab==='payouts') loadAdminPayouts();
+    if(tab==='proofs') loadPaymentProofs();
+    if(tab==='withdrawals') loadWithdrawals();
+  }
+
+  window.filterUsersByDate = async function(){
+    const date = document.getElementById('userDateFilter').value;
+    if(!date) return alert('Pick a date');
+    const allUsers = await loadAllFromDB();
+    renderUsers(allUsers, date);
+  }
+
+  // UPDATED: BUTTON DISABLES AFTER 1 CLICK PER DAY
+  async function loadAdminPayouts(){
+    const allUsers = await loadAllFromDB();
+    const today = new Date().toISOString().split('T')[0];
+    let html = '';
+    for(const key in allUsers){
+      const u = allUsers[key]; if(!u.name || u.hiddenFromAdmin) continue;
+      if(u.investments){
+        u.investments.forEach((inv,i)=>{
+          if(inv.active){
+            const daysLeft = PAYOUT_DAYS - inv.daysPaid;
+            const joinDate = new Date(inv.startDate).toLocaleDateString();
+            const paidToday = inv.lastPaidDate === today;
+
+            html += `<div class="user-card">
+              <h4>${u.name} - ${u.phone}</h4>
+              <p>Package: UGX ${inv.amount.toLocaleString()} | Earn: UGX ${inv.daily.toLocaleString()}/day</p>
+              <p>Paid: ${inv.daysPaid}/${PAYOUT_DAYS} days | ${daysLeft} days left</p>
+              <div class="join-date">Started: ${joinDate}</div>
+              ${paidToday
+              ? `<button class="btn btn-outline" style="width:auto;padding:8px;opacity:0.5;cursor:not-allowed" disabled>✅ Paid Today</button>`
+                : `<button class="btn btn-success" style="width:auto;padding:8px" onclick="markPaid('${key}',${i})">Mark Paid Today</button>`
+              }
+            </div>`;
+          }
+        })
+      }
+    }
+    document.getElementById('adminPayouts').innerHTML = html || 'No active packages';
+  }
+
+  async function loadAllReferrals(){
+    const allUsers = await loadAllFromDB();
+    let html = '';
+    for(const key in allUsers){
+      const u = allUsers[key]; if(!u.name ||!u.referralsData || u.hiddenFromAdmin) continue;
+      for(const refKey in u.referralsData){
+        const refData = u.referralsData[refKey];
+        if(refData.hiddenFromAdmin) continue;
+        const referredUser = allUsers[refKey];
+        if(!referredUser) continue;
+        const status = refData.paid? '<span class="status-badge status-paid">PAID</span>' : '<span class="status-badge status-pending">PENDING</span>';
+        html += `<div class="user-card">
+          <h4>Referrer: ${u.name} - ${u.phone}</h4>
+          <p>Referred: ${referredUser.name} - ${referredUser.phone}</p>
+          <div class="join-date">Joined: ${new Date(refData.joinDate).toLocaleDateString()}</div>
+          <p>Status: ${status}</p>
+          <div style="display:flex;gap:8px">
+            ${!refData.paid? `<button class="btn btn-success" style="flex:1;padding:8px" onclick="markReferralPaid('${key}','${refKey}')">Mark Referral Paid</button>` : ''}
+            <button class="btn btn-danger" style="flex:1;padding:8px" onclick="deleteAdminReferral('${key}','${refKey}')">🗑️ Delete</button>
+          </div>
+        </div>`;
+      }
+    }
+    document.getElementById('adminReferrals').innerHTML = html || 'No referrals found';
+  }
+
+  async function loadPaymentProofs(){
+    const snap = await get(ref(db, 'paymentProofs'));
+    const proofs = snap.exists()? snap.val() : {};
+    let html = '';
+    const keys = Object.keys(proofs).reverse();
+    if(keys.length === 0) html = 'No payment proofs submitted yet';
+    keys.forEach(key=>{
+      const p = proofs[key];
+      html += `<div class="proof-box"><h4>${p.name} - ${p.phone}</h4><p>Package: UGX ${p.amount.toLocaleString()} | Method: ${p.method}</p><div class="join-date">Submitted: ${new Date(p.timestamp).toLocaleString()}</div><div class="proof-sms">${p.sms}</div><button class="btn btn-danger" style="width:100%;padding:8px;margin-top:8px" onclick="deleteProof('${key}')">🗑️ Delete This Proof</button></div>`;
+    });
+    document.getElementById('adminProofs').innerHTML = html;
+  }
+
+  async function loadWithdrawals(){
+    const allUsers = await loadAllFromDB();
+    let html = '';
+    for(const key in allUsers){
+      const u = allUsers[key]; if(u.hiddenFromAdmin) continue;
+      if(u.withdrawRequests){
+        for(const wid in u.withdrawRequests){
+          const w = u.withdrawRequests[wid];
+          if(w.status === 'pending'){
+            const typeColor = w.type.includes('INVITER')? '#00ff88' : '#ff6b00';
+            html += `<div class="withdraw-request"><h4>🔔 ${w.type}</h4><h4>${u.name} - ${u.phone}</h4><p>Amount: <span style="color:${typeColor};font-weight:900">UGX ${w.amount.toLocaleString()}</span></p>${w.packageInfo? `<p>Package: ${w.packageInfo}</p>` : ''}<div class="join-date">Requested: ${new Date(w.date).toLocaleString()}</div><p>Status: <span class="status-badge status-withdraw">PENDING</span></p><button class="btn btn-success" style="width:100%;padding:10px;margin-top:8px" onclick="markWithdrawPaid('${key}','${wid}')">✅ Mark As PAID</button></div>`;
+          }
+        }
+      }
+    }
+    document.getElementById('adminWithdrawals').innerHTML = html || 'No pending withdrawal requests';
+  }
+
+  window.deleteProof = async function(proofKey){
+    if(!confirm('Delete this payment proof?')) return;
+    await set(ref(db, 'paymentProofs/' + proofKey), null);
+    alert('Payment proof deleted');
+    loadPaymentProofs();
+  }
+
+  window.deleteUserAdmin = async function(userKey){
+    const user = allUsersCache[userKey];
+    if(!user) return;
+    if(!confirm(`Hide ${user.name} from admin panel? User account will still work.`)) return;
+    await update(ref(db, 'users/' + userKey), {hiddenFromAdmin: true});
+    alert(`${user.name} hidden from admin panel`);
+    loadAllUsers();
+  }
+
+  function renderUsers(allUsers, filterDate = null){
+    let html = "";
+    for(const key in allUsers){
+      const u = allUsers[key]; if(!u.name || u.hiddenFromAdmin) continue;
+      const joinDate = new Date(u.joinDate || Date.now()).toISOString().split('T')[0];
+      if(filterDate && joinDate!== filterDate) continue;
+      let referralsHtml = ''; if(u.referrals && u.referrals.length > 0){ referralsHtml = `<p style="font-size:11px;color:#00ff88">👥 Referrals: ${u.referrals.length} | Earned: UGX ${(u.referrals.length * REFERRAL_BONUS).toLocaleString()}</p>`; }
+      let packagesHtml = ''; if(u.investments){ u.investments.forEach((inv, i)=>{ const daysLeft = PAYOUT_DAYS - inv.daysPaid; const status = inv.active? `ACTIVE - ${daysLeft} days left` : 'EXPIRED'; packagesHtml += `<p style="font-size:11px">UGX ${inv.amount.toLocaleString()} | Earn: UGX ${inv.daily.toLocaleString()}/day | Paid: ${inv.daysPaid}/30 | ${status}</p>`; }); }
+      html += `<div class="user-card"><h4>${u.name}</h4><p>📱 ${u.phone}</p><p>💰 Balance: UGX ${u.balance?.toLocaleString() || 0}</p><div class="join-date">Joined: ${new Date(u.joinDate || Date.now()).toLocaleDateString()}</div>${referralsHtml}${packagesHtml}<button class="btn btn-danger" style="width:100%;padding:8px;margin-top:8px" onclick="deleteUserAdmin('${key}')">🗑️ Hide User</button></div>`;
+    }
+    document.getElementById('adminUsers').innerHTML = html || "No users found";
+  }
+
+  window.loadAllUsers = async function(){ const allUsers = await loadAllFromDB(); renderUsers(allUsers); }
+  function makeUserId(phone, name){ return 'situka_user_' + btoa(encodeURIComponent(phone+name)).replace(/=/g,''); }
+
+  function showReferral(){
+    if(currentUser){
+      const baseUrl = window.location.origin + window.location.pathname;
+      const link = `${baseUrl}?ref=${currentUserId}&name=${encodeURIComponent(currentUser.name)}`;
+      document.getElementById('referralLink').textContent = link;
+      document.getElementById('referralCount').textContent = currentUser.referrals?.length || 0;
+      document.getElementById('referralEarned').textContent = ((currentUser.referrals?.length || 0) * REFERRAL_BONUS).toLocaleString();
+    }
+  }
+
+  window.deleteMyReferral = async function(refKey){
+    if(!confirm('Remove this person from your referral list?')) return;
+    await update(ref(db, 'users/' + currentUserId + '/referralsData/' + refKey), {hiddenFromReferrer: true});
+    alert('Referral removed from your list');
+    loadReferrals();
+  }
+
+  async function loadReferrals(){
+    if(!currentUser) return;
+    document.getElementById('refCount2').textContent = currentUser.referrals?.length || 0;
+    const allUsers = await loadAllFromDB();
+    let html = '';
+    if(currentUser.referralsData){
+      for(const refKey in currentUser.referralsData){
+        const r = allUsers[refKey];
+        const refData = currentUser.referralsData[refKey];
+        if(!r || refData.hiddenFromReferrer) continue;
+
+        const inviterInfo = currentUser;
+        html += `<div class="record-item">
+          <div style="font-weight:700;color:#00ff88">Invited Person:</div>
+          <div style="font-size:14px">${r.name}</div>
+          <div style="font-size:12px;color:#aaa">📱 ${r.phone}</div>
+          <div class="inviter-info">
+            <div style="font-weight:700;color:#00d4ff">Invited By:</div>
+            <div style="font-size:13px">${inviterInfo.name}</div>
+            <div style="font-size:12px;color:#aaa">📱 ${inviterInfo.phone}</div>
+          </div>
+          <div class="join-date">Joined: ${new Date(refData.joinDate).toLocaleDateString()}</div>
+          <div>Status: ${refData.paid? '<span class="status-badge status-paid">PAID</span>' : '<span class="status-badge status-pending">PENDING</span>'}</div>
+          <button class="btn btn-danger" style="width:100%;padding:8px;margin-top:8px" onclick="deleteMyReferral('${refKey}')">🗑️ Delete Referral</button>
+        </div>`;
+      }
+    }
+    document.getElementById('refList').innerHTML = html || 'No referrals yet';
+  }
+
+  window.copyReferral = function(){ navigator.clipboard.writeText(document.getElementById('referralLink').textContent); alert('Referral link copied!'); }
+
+  window.createAccount = async function(){
+    const name = document.getElementById('fullname').value.trim().toUpperCase();
+    const digits = document.getElementById('phone').value.trim();
+    const refCode = document.getElementById('refcode').value;
+    if(!name || digits.length!== 9) return alert('Fill all fields correctly');
+    const phone = "+256" + digits;
+    currentUserId = makeUserId(phone,name);
+    const existing = await loadLocal(currentUserId);
+    if(existing) return alert(`Account found. Please LOGIN`);
+    const now = Date.now();
+    currentUser = {name,phone,balance:0,totalPaid:0,investments:[],referrals:[],referralsData:{},referralEarned:0,joinDate:now,withdrawRequests:{}};
+    if(refCode){
+      const referrer = await loadLocal(refCode);
+      if(referrer){
+        referrer.referrals = referrer.referrals || [];
+        referrer.referrals.push(currentUserId);
+        referrer.referralsData = referrer.referralsData || {};
+        referrer.referralsData[currentUserId] = {joinDate: now, paid: false};
+        referrer.balance = (referrer.balance || 0) + REFERRAL_BONUS;
+        referrer.referralEarned = (referrer.referralEarned || 0) + REFERRAL_BONUS;
+        await saveLocal(refCode, referrer);
+      }
+    }
+    await saveLocal(currentUserId, currentUser);
+    isNewUser = true;
+    document.getElementById('bottomnav').classList.add('show');
+    updateUserInfo();
+    updateBalance();
+    showScreen('investments');
+  }
+
+  window.loginExisting = async function(){
+    const name = document.getElementById('loginname').value.trim().toUpperCase();
+    const digits = document.getElementById('loginphone').value.trim();
+    if(!name || digits.length!== 9) return alert('Fill all fields');
+    const phone = "+256" + digits;
+    currentUserId = makeUserId(phone,name);
+    currentUser = await loadLocal(currentUserId);
+    if(!currentUser) return alert('Account not found');
+    isNewUser = false;
+    document.getElementById('bottomnav').classList.add('show');
+    updateUserInfo();
+    updateBalance();
+    showScreen('investments');
+  }
+
+  window.logout = function(){
+    currentUser=null;
+    currentUserId=null;
+    isAdmin=false;
+    isNewUser=false;
+    document.getElementById('bottomnav').classList.remove('show');
+    showScreen('login');
+  }
+
+  function updateUserInfo(){
+    if(currentUser){
+      document.getElementById('welcomeName').textContent = currentUser.name;
+      document.getElementById('dashName').textContent = currentUser.name;
+    }
+  }
+
+  window.selectPackage = function(amount, daily, minWithdraw, el){
+    document.querySelectorAll('.invest-card').forEach(c=>c.classList.remove('selected'));
+    if(el) el.classList.add('selected');
+    selectedPackage = {amount, daily, minWithdraw, days: PAYOUT_DAYS};
+    document.getElementById('investBtn').textContent = `🚀 Invest UGX ${amount.toLocaleString()}`;
+  }
+
+  window.goToPayment = function(){
+    if(!selectedPackage) return alert('Please select a package first');
+    document.getElementById('selectedpackage').textContent = `UGX ${selectedPackage.amount.toLocaleString()}`;
+    showScreen('payment');
+    document.getElementById('step2').style.display='block';
+  }
+
+  window.showPayment = function(method){
+    selectedPaymentMethod = method;
+    document.getElementById('mtnbtn').classList.remove('selected');
+    document.getElementById('airtelbtn').classList.remove('selected');
+    if(method === 'MTN') document.getElementById('mtnbtn').classList.add('selected');
+    if(method === 'Airtel') document.getElementById('airtelbtn').classList.add('selected');
+    const number = method==='MTN'? MTN_NUMBER : AIRTEL_NUMBER;
+    document.getElementById('paymentnumberbox').style.display='block';
+    document.getElementById('paymentnumberbox').innerHTML = `<div class="payment-number-box"><div>Send UGX ${selectedPackage.amount.toLocaleString()} to:</div><div class="payment-number">${number}</div><div>Account Name: ${ADMIN_ACCOUNT_NAME}</div></div>`;
+  }
+
+  window.submitPaymentProof = async function(){
+    const sms = document.getElementById('paymentProof').value.trim();
+    if(!sms) return alert('Please paste your payment SMS');
+    if(!selectedPaymentMethod) return alert('Please select payment method first');
+
+    const now = Date.now();
+    currentUser.investments.push({...selectedPackage, method:selectedPaymentMethod, startDate:now, daysPaid: 0, active: true });
+    await saveLocal(currentUserId, currentUser);
+
+    const proofData = {
+      userId: currentUserId,
+      name: currentUser.name,
+      phone: currentUser.phone,
+      amount: selectedPackage.amount,
+      method: selectedPaymentMethod,
+      sms: sms,
+      timestamp: now
+    };
+    await push(ref(db, 'paymentProofs'), proofData);
+
+    alert(`✅ Payment proof submitted successfully! Admin Situka will verify it.`);
+    document.getElementById('paymentProof').value = '';
+    document.getElementById('step2').style.display='none';
+
+    if(isNewUser){
+      isNewUser = false;
+      showScreen('login');
+    } else {
+      document.getElementById('bottomnav').classList.add('show');
+      updateUserInfo();
+      updateBalance();
+      showScreen('investments');
+    }
+  }
+
+  window.requestReferralWithdraw = async function(){
+    if(!currentUser) return;
+    const referralAmount = (currentUser.referrals?.length || 0) * REFERRAL_BONUS;
+    if(referralAmount <= 0) return alert('You have no referral earnings');
+
+    if(!confirm(`Withdraw Referral Earnings: UGX ${referralAmount.toLocaleString()}?`)) return;
+
+    const withdrawId = 'wd_ref_' + Date.now();
+    currentUser.withdrawRequests = currentUser.withdrawRequests || {};
+    currentUser.withdrawRequests[withdrawId] = {
+      type: 'INVITER WITHDRAW',
+      amount: referralAmount,
+      date: Date.now(),
+      status: 'pending'
+    };
+
+    currentUser.balance -= referralAmount;
+    currentUser.referralEarned = 0;
+    await saveLocal(currentUserId, currentUser);
+
+    alert('✅ Referral withdrawal request sent to Admin Situka.');
+    updateBalance();
+    loadDashboard();
+  }
+
+  window.requestPackageWithdraw = async function(invIndex){
+    if(!currentUser) return;
+    const inv = currentUser.investments[invIndex];
+    if(!inv ||!inv.active) return;
+
+    const earned = inv.daysPaid * inv.daily;
+    if(earned < inv.minWithdraw) return alert(`Min withdraw for this package is UGX ${inv.minWithdraw.toLocaleString()}`);
+
+    if(!confirm(`Withdraw Package Earnings: UGX ${earned.toLocaleString()}?`)) return;
+
+    const withdrawId = 'wd_pkg_' + Date.now();
+    currentUser.withdrawRequests = currentUser.withdrawRequests || {};
+    currentUser.withdrawRequests[withdrawId] = {
+      type: 'PACKAGE WITHDRAW',
+      amount: earned,
+      packageInfo: `UGX ${inv.amount.toLocaleString()} Package`,
+      packageIndex: invIndex,
+      date: Date.now(),
+      status: 'pending'
+    };
+
+    currentUser.balance -= earned;
+    inv.daysPaid = 0;
+    await saveLocal(currentUserId, currentUser);
+
+    alert('✅ Package withdrawal request sent to Admin Situka.');
+    updateBalance();
+    loadDashboard();
+  }
+
+  async function loadDashboard(){
+    if(!currentUser) return;
+    updateBalance();
+    const investDiv = document.getElementById('activeinvest');
+    let active = currentUser.investments.filter(inv => inv.active);
+    if(active.length === 0) investDiv.innerHTML = 'No active packages';
+    else {
+      let html = '';
+      currentUser.investments.forEach((inv,i) => {
+        if(inv.active){
+          const daysLeft = PAYOUT_DAYS - inv.daysPaid;
+          const earned = inv.daysPaid * inv.daily;
+          const canWithdraw = earned >= inv.minWithdraw;
+          html += `<div class="record-item"><div style="font-weight:700">UGX ${inv.amount.toLocaleString()} Package</div><div style="color:#00ff88">Earn: UGX ${inv.daily.toLocaleString()}/day | Earned: UGX ${earned.toLocaleString()}</div><div style="font-size:11px;color:#ffaa00">Min Withdraw: UGX ${inv.minWithdraw.toLocaleString()} ${canWithdraw? '✅ Ready' : '❌ Not Yet'}</div><div style="font-size:11px;color:#00d4ff">⏳ ${daysLeft} days left | Paid: ${inv.daysPaid} days</div>${canWithdraw? `<button class="package-withdraw-btn" onclick="requestPackageWithdraw(${i})">💸 Withdraw This Package</button>` : ''}</div>`;
+        }
+      });
+      investDiv.innerHTML = html;
+    }
+
+    const referralBtn = document.getElementById('referralWithdrawBtn');
+    const referralAmount = (currentUser.referrals?.length || 0) * REFERRAL_BONUS;
+    if(referralAmount > 0){
+      referralBtn.textContent = `🎁 Withdraw Referral: UGX ${referralAmount.toLocaleString()}`;
+      referralBtn.classList.remove('withdraw-disabled');
+      referralBtn.disabled = false;
+    } else {
+      referralBtn.textContent = `🎁 Withdraw Referral: UGX 0`;
+      referralBtn.classList.add('withdraw-disabled');
+      referralBtn.disabled = true;
+    }
+  }
+
+  async function loadRecords(){
+    if(!currentUser) return;
+    const recordsDiv = document.getElementById('allrecords');
+    if(currentUser.investments.length === 0){ recordsDiv.innerHTML = 'No records yet'; }
+    else {
+      let html = '';
+      currentUser.investments.slice().reverse().forEach((inv,i) => {
+        const status = inv.active? `ACTIVE` : `COMPLETED`;
+        const earned = inv.daysPaid * inv.daily;
+        html += `<div class="record-item"><div style="font-weight:700">Package: UGX ${inv.amount.toLocaleString()}</div><div style="color:#00ff88">Daily: UGX ${inv.daily.toLocaleString()} x ${inv.daysPaid} days = UGX ${earned.toLocaleString()}</div><div style="font-size:11px;color:#aaa">${status} | Started: ${new Date(inv.startDate).toLocaleDateString()}</div></div>`;
+      });
+      recordsDiv.innerHTML = html;
+    }
+  }
+
+  function updateBalance(){
+    if(currentUser){
+      document.getElementById('balance').textContent = currentUser.balance.toLocaleString();
+      document.getElementById('dbalance').textContent = currentUser.balance.toLocaleString();
+    }
+  }
+</script>
+</body>
+</html>
 
